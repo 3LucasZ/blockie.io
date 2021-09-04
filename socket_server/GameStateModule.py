@@ -6,7 +6,7 @@ import random
 
 class GameState():
     def __init__(self):
-        self.fps = 5
+        self.fps = 30
         self.playerSet = set()
         self.dict = {
             'players':[],
@@ -17,7 +17,7 @@ class GameState():
         for r in range(10):
             cList = []
             for c in range(10):
-                cList.append(random.choice(tileChoices))
+                cList.append(tileChoices[0])
             self.dict['tiles'].append(cList)
     
     async def handle_connections(self, websocket, path):
@@ -32,9 +32,15 @@ class GameState():
         #create a listener for the connection
         while True:
             try:
-                playerState = await player.websocket.recv()
-                player.update(playerState)
-                print(playerState)
+                newJsonData = await player.websocket.recv()
+                newData = json.loads(newJsonData)
+                if newData['type'] == 'playerState':
+                    player.update(newData['data'])
+                    print(newData['data'])
+                elif newData['type'] == 'newTile':
+                    r = newData['data']['position']['x']
+                    c = newData['data']['position']['y']
+                    self.dict['tiles'][r][c] = newData['data']['tile']
             except:
                 continue
 

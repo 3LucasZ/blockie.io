@@ -4,28 +4,25 @@ import 'package:flutter/material.dart';
 import 'package:flame/game.dart';
 import 'package:web_socket_channel/web_socket_channel.dart';
 import 'game_class.dart';
+import 'inventory_bar.dart';
 
 const String serverAddress = '192.168.1.144:5000';
 var channel = WebSocketChannel.connect(Uri.parse('ws://' + serverAddress));
-//Dummy gameState, placeholder
-Map<String, dynamic> gameState = {
-  'players': [
+//Dummy gameState schema
+/*
+'players': [
     {
-      'position': {'x': 0, 'y': 0},
-      'rotation': pi
+      'position': {'x': 100, 'y': 100},
+      'rotation': 0,
+      'selected': 'wood'
     }
   ],
   'tiles': [
     ['wood', 'grass'],
     ['wood', 'grass']
   ]
-};
-
-int sendID = 0;
-double dX = 0;
-double dY = 0;
-double theta = 0;
-Vector2 myPosition = Vector2(0, 0);
+ */
+Map<String, dynamic> gameState = {};
 
 void main() async {
   final myGame = MyGame();
@@ -33,8 +30,16 @@ void main() async {
     gameState = jsonDecode(message);
   });
   runApp(
-    GameWidget(
-      game: myGame,
+    MaterialApp(
+      home: Scaffold(
+        body: Stack(
+          fit: StackFit.expand,
+          children: [
+            GameWidget(game: myGame),
+            InventoryBar(),
+          ],
+        ),
+      ),
     ),
   );
 }

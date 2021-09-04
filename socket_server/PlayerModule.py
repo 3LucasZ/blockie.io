@@ -8,7 +8,8 @@ class Player():
                 'x':0,
                 'y':0
             },
-            'rotation': 3.14
+            'selected': 'wood',
+            'rotation': 0
         }
-    def update(self, jsonData):
-        self.dict = json.loads(jsonData)
+    def update(self, data):
+        self.dict = data

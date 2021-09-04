@@ -1,6 +1,7 @@
 import asyncio
 import websockets
 import sys
+#import ssl
 
 import GameStateModule
 

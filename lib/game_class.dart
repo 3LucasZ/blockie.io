@@ -1,21 +1,32 @@
 import 'dart:math';
 import 'package:flame/gestures.dart';
 import 'package:flame/palette.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter_flame_experiment/game_state_publisher.dart';
 import 'dart:ui';
+import 'package:flutter/material.dart';
 import 'constants.dart';
 import 'main.dart';
 import 'package:flame/game.dart';
 
+Vector2 myPosition = Vector2(100.0, 100.0);
+String selectedObject = 'wood';
+double myTheta = 0.0;
+
+late final playerImage;
+late final grassTile;
+late final woodTile;
+
 class MyGame extends BaseGame with TapDetector {
   static final squarePaint = BasicPalette.white.paint();
-  late final playerImage;
-  late final grassTile;
-  late final woodTile;
+  //declare assets
+
+  int sendID = 0;
+  Vector2 myTarget = Vector2(0.0, 0.0);
+  Vector2 mySpeed = Vector2(0.0, 0.0);
 
   @override
   Future<void> onLoad() async {
+    //define assets
     playerImage = await images.load('player.png');
     grassTile = await images.load('grass_tile.jpeg');
     woodTile = await images.load('wood_tile.jpeg');
@@ -24,11 +35,18 @@ class MyGame extends BaseGame with TapDetector {
   @override
   void update(double dt) {
     if (sendID == 0) {
-      myPosition.x += SPEED * cos(theta);
-      myPosition.y += SPEED * sin(theta);
+      if (sqrt((myPosition.x - myTarget.x) * (myPosition.x - myTarget.x) +
+              (myPosition.y - myTarget.y) * (myPosition.y - myTarget.y)) >
+          SPEED) {
+        myPosition.x += mySpeed.x;
+        myPosition.y += mySpeed.y;
+      } else {
+        myPosition.x = myTarget.x;
+        myPosition.y = myTarget.y;
+      }
       publishPlayerState();
     }
-    sendID = (sendID + 1) % 10;
+    sendID = (sendID + 1) % UPDATE_INTERVAL;
   }
 
   @override
@@ -51,26 +69,53 @@ class MyGame extends BaseGame with TapDetector {
       double cx = player['position']['x'];
       double cy = player['position']['y'];
       double ctheta = player['rotation'];
+      String blockName = player['selected'];
+      var block;
+      if (blockName == 'wood') {
+        block = woodTile;
+      } else if (blockName == 'grass') {
+        block = grassTile;
+      }
+
       canvas.translate(cx, cy);
-      canvas.rotate(ctheta + pi / 2);
+      canvas.rotate(ctheta);
       canvas.drawImageRect(
           playerImage,
           Rect.fromLTWH(0, 0, 50, 50),
           Rect.fromCenter(
               center: Offset(0, 0), width: PLAYER_SIZE, height: PLAYER_SIZE),
           squarePaint);
-      canvas.rotate(-1 * (ctheta + pi / 2));
-      canvas.translate(-1 * cx, -1 * cy);
+      if (block != null) {
+        canvas.drawImageRect(
+            block,
+            Rect.fromLTWH(0, 0, 50, 50),
+            Rect.fromCenter(
+                center: Offset(SELECTED_OFFSET, 0),
+                width: TILE_SIZE,
+                height: TILE_SIZE),
+            squarePaint);
+      }
+      canvas.restore();
     }
   }
 
   @override
   void onTapDown(TapDownInfo event) {
-    dX = event.eventPosition.global.x - myPosition.x;
-    dY = event.eventPosition.global.y - myPosition.y;
-    theta = atan(dY / dX);
-    if (dX < 0) {
-      theta += pi;
+    if (selectedObject != 'none') {
+      int placementX =
+          ((myPosition.x + cos(myTheta) * SELECTED_OFFSET) / TILE_SIZE).round();
+      int placementY =
+          ((myPosition.y + sin(myTheta) * SELECTED_OFFSET) / TILE_SIZE).round();
+      publishNewTile(placementX, placementY, selectedObject);
+    } else {
+      myTarget.x = event.eventPosition.global.x;
+      myTarget.y = event.eventPosition.global.y;
+      myTheta = atan((myTarget.y - myPosition.y) / (myTarget.x - myPosition.x));
+      if (myPosition.x > myTarget.x) {
+        myTheta -= pi;
+      }
+      mySpeed.x = SPEED * cos(myTheta);
+      mySpeed.y = SPEED * sin(myTheta);
     }
   }
 }

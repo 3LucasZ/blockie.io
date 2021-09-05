@@ -15,3 +15,18 @@ void onKeyEvent(RawKeyEvent e) {
   }
 }
 */
+
+//Dummy gameState schema
+/*
+'players': [
+    {
+      'position': {'x': 100, 'y': 100},
+      'rotation': 0,
+      'selected': 'wood'
+    }
+  ],
+  'tiles': [
+    ['wood', 'grass'],
+    ['wood', 'grass']
+  ]
+ */

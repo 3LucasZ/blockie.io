@@ -6,7 +6,7 @@ import random
 
 class GameState():
     def __init__(self):
-        self.fps = 30
+        self.fps = 15
         self.playerSet = set()
         self.dict = {
             'players':[],

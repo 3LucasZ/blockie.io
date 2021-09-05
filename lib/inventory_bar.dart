@@ -1,6 +1,7 @@
 import 'dart:math';
 import 'package:flutter/material.dart';
 import 'game_class.dart';
+import 'main.dart';
 
 class InventoryBar extends StatelessWidget {
   InventoryBar({
@@ -19,7 +20,7 @@ class InventoryBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var screenSize = MediaQuery.of(context).size;
+    screenSize = MediaQuery.of(context).size;
     return Positioned(
       bottom: 0,
       left: 0,
@@ -53,20 +54,24 @@ class InventorySquare extends StatelessWidget {
       child: Container(
         width: tileSize,
         height: tileSize,
-        color: new Color.fromRGBO(128, 128, 128, 0.5),
-        /*child: Image(
-          image: AssetImage('images/grass_tile.jpeg'),
-          width: double.infinity,
-          height: double.infinity,
+        color: new Color.fromRGBO(0, 0, 0, 0.5),
+        child: Padding(
+          padding: EdgeInsets.all(tileSize / 6),
+          child: Image(
+            image: AssetImage('images/grass_tile.jpeg'),
+            width: double.infinity,
+            height: double.infinity,
+          ),
         ),
 
-         */
+        /*
         child: FittedBox(
           fit: BoxFit.fitWidth,
           child: Text(
             contained_object,
           ),
         ),
+         */
       ),
     );
   }

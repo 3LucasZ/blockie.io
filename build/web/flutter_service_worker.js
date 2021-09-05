@@ -4,9 +4,9 @@ const TEMP = 'flutter-temp-cache';
 const CACHE_NAME = 'flutter-app-cache';
 const RESOURCES = {
   "version.json": "ad74a1c44cd1329ebdb96ea926920dfa",
-"index.html": "a5c4b6a4fe244f7c6466537b033441b2",
-"/": "a5c4b6a4fe244f7c6466537b033441b2",
-"main.dart.js": "cf43e292019a068250d0515ef9f4d18f",
+"index.html": "74dbf45c360bfe98ecaa14f16e8d7cf0",
+"/": "74dbf45c360bfe98ecaa14f16e8d7cf0",
+"main.dart.js": "f68e87850aec76ffdd2246a35fe088fb",
 "favicon.png": "5dcef449791fa27946b3d35ad8803796",
 "icons/Icon-192.png": "ac9a721a12bbc803b44f645561ecb1e1",
 "icons/Icon-512.png": "96e752610906ba2a93c65f8abe1645f1",
@@ -18,7 +18,7 @@ const RESOURCES = {
 "assets/fonts/MaterialIcons-Regular.otf": "4e6447691c9509f7acdbf8a931a85ca1",
 "assets/assets/images/wood_tile.jpeg": "66cea033d7530c845dc71fd191dcb1a5",
 "assets/assets/images/grass_tile.jpeg": "06e25784aeef521e0b5abb3b89f6f04c",
-"assets/assets/images/player.png": "6ad43c30f728ffa735a922c61d23a011"
+"assets/assets/images/player.png": "aa4f91ccef200eacfe971e89195eca99"
 };
 
 // The application shell files that are downloaded before a service worker can

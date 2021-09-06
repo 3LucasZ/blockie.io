@@ -4,6 +4,7 @@ class Player():
     def __init__(self, websocket):
         self.websocket = websocket
         self.dict = {
+            'username': 'bot',
             'position': {
                 'x':0,
                 'y':0

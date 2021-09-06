@@ -1,7 +1,6 @@
-import 'dart:math';
 import 'package:flutter/material.dart';
-import 'game_class.dart';
-import 'main.dart';
+import 'game_class/game_class.dart';
+import 'global_vars.dart';
 
 class InventoryBar extends StatelessWidget {
   InventoryBar({

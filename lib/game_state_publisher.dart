@@ -1,11 +1,12 @@
 import 'dart:convert';
-import 'game_class.dart';
-import 'main.dart';
+import 'game_class/game_class.dart';
+import 'global_vars.dart';
 
 void publishPlayerState() {
   Map<String, dynamic> myPlayerState = {
     'type': 'playerState',
     'data': {
+      'username': 'jeff',
       'position': {'x': myPosition.x, 'y': myPosition.y},
       'rotation': myTheta,
       'selected': selectedObject

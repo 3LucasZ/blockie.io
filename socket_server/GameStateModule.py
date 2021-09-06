@@ -6,19 +6,23 @@ import random
 
 class GameState():
     def __init__(self):
-        self.fps = 15
+        self.fps = 4
         self.playerSet = set()
         self.dict = {
             'players':[],
-            'tiles':[]
+            'tiles':[],
+            'meta': {
+                'x': 0,
+                'y': 0
+            }
         }
         tileChoices = ['grass', 'wood']
 
-        for r in range(10):
-            cList = []
-            for c in range(10):
-                cList.append(tileChoices[0])
-            self.dict['tiles'].append(cList)
+        for y in range(50):
+            yList = []
+            for x in range(50):
+                yList.append(tileChoices[0])
+            self.dict['tiles'].append(yList)
     
     async def handle_connections(self, websocket, path):
         #setup new connection
@@ -36,11 +40,11 @@ class GameState():
                 newData = json.loads(newJsonData)
                 if newData['type'] == 'playerState':
                     player.update(newData['data'])
-                    print(newData['data'])
+                    print('recved', newData['data'])
                 elif newData['type'] == 'newTile':
-                    r = newData['data']['position']['x']
-                    c = newData['data']['position']['y']
-                    self.dict['tiles'][r][c] = newData['data']['tile']
+                    x = newData['data']['position']['x']
+                    y = newData['data']['position']['y']
+                    self.dict['tiles'][y][x] = newData['data']['tile']
             except:
                 continue
 
@@ -62,7 +66,7 @@ class GameState():
         playersToRemove = set()
         for player in self.playerSet:
             try:
-                await player.websocket.send(json.dumps(self.dict))
+                await self.send_snapshot(player)
             except:
                 playersToRemove.add(player)
                 print("A player disconnected")
@@ -75,4 +79,14 @@ class GameState():
     
     def remove_player(self, player):
         self.playerSet.remove(player)
+
+    async def send_snapshot(self, player):
+        cx = int(player.dict['position']['x'] // 50)
+        cy = int(player.dict['position']['y'] // 50)
+        snapshot = dict(self.dict)
+        snapshot['tiles'] = [tileRow[cx-8:cx+9] for tileRow in snapshot['tiles'][cy-8:cy+9]]
+        snapshot['meta']['x'] = cx-8
+        snapshot['meta']['y'] = cy-8
+        print('sent')
+        await player.websocket.send(json.dumps(snapshot))
     

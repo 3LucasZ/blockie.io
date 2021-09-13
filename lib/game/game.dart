@@ -3,6 +3,7 @@ import 'package:flame/game.dart';
 import 'package:flutter_flame_experiment/global/myPlayer_state.dart';
 import 'package:flutter_flame_experiment/global/websocket.dart';
 import 'player.dart';
+import 'package:flutter_flame_experiment/global/config.dart';
 
 class MyGame extends BaseGame with HasDraggableComponents {
   final Map<String, dynamic> startingData;
@@ -46,7 +47,7 @@ class MyGame extends BaseGame with HasDraggableComponents {
     if (publishCounter == 0) {
       publishPlayerState();
     }
-    publishCounter = (publishCounter + 1) % 10;
+    publishCounter = (publishCounter + 1) % (60 / FPS).floor();
   }
 
   @override

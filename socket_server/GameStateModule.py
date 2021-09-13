@@ -3,10 +3,13 @@ import websockets
 import json
 import PlayerModule
 import random
+import utils
+
+config = utils.get_config()
 
 class GameState():
     def __init__(self):
-        self.fps = 6
+        self.fps = config['GAME_CONFIG']['FPS']
         self.playerSet = set()
         self.dict = {
             'type': 'gameState',

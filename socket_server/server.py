@@ -1,13 +1,14 @@
 import asyncio
 import websockets
 import sys
-#import ssl
-
 import GameStateModule
-IP = 'localhost'
-PORT = 5000
-gameState = GameStateModule.GameState()
+import utils
 
+config = utils.get_config()
+IP = config["WS_SERVER_CONFIG"]["IP"]
+PORT = config["WS_SERVER_CONFIG"]["PORT"]
+
+gameState = GameStateModule.GameState()
 if __name__ == '__main__':
     try:
         print("Starting the server...")

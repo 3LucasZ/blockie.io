@@ -18,7 +18,7 @@ void publishPlayerState() {
         'position': {
           'x': gameState['players'][myId.toString()]['position']['x'] +
               (mySpeed * cos(myAngle)),
-          'y': gameState['players'][myId.toString()]['position']['x'] +
+          'y': gameState['players'][myId.toString()]['position']['y'] +
               (mySpeed * sin(myAngle))
         },
         'angle': myAngle,

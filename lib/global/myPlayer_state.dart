@@ -5,5 +5,5 @@ import 'package:flutter_flame_experiment/game/player.dart';
 GameObject holdingObject = none;
 double myAngle = 0;
 double mySpeed = 0;
-double myMaxSpeed = 50;
+double myMaxSpeed = 3;
 int myId = 0;

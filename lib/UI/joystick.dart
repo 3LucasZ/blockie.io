@@ -27,19 +27,23 @@ class _JoystickState extends State<Joystick> {
     updateDelta(
       Offset.fromDirection(
         newDelta.direction,
-        min(30, newDelta.distance),
+        min(outerSize.dx / 2, newDelta.distance),
       ),
     );
   }
 
   Widget build(BuildContext context) {
     Size screenSize = MediaQuery.of(context).size;
+    outerSize = Offset(screenSize.width / 5, screenSize.width / 5);
+    innerSize = Offset(screenSize.height / 10, screenSize.height / 10);
     return Positioned(
       left: position.dx,
       bottom: position.dy,
       child: Container(
         width: outerSize.dx,
         height: outerSize.dx,
+        padding: EdgeInsets.all(0),
+        margin: EdgeInsets.all(0),
         decoration: BoxDecoration(
           color: Color(0xcc2B3E47),
           shape: BoxShape.circle,
@@ -51,6 +55,8 @@ class _JoystickState extends State<Joystick> {
               child: Container(
                 width: innerSize.dx,
                 height: innerSize.dy,
+                padding: EdgeInsets.all(0),
+                margin: EdgeInsets.all(0),
                 decoration: BoxDecoration(
                   color: Color(0xcc526A77),
                   shape: BoxShape.circle,

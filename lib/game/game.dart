@@ -55,9 +55,9 @@ class MyGame extends BaseGame with HasDraggableComponents {
     super.onResize(canvasSize);
     double zoomScale;
     if (canvasSize.x > canvasSize.y) {
-      zoomScale = canvasSize.x / 500;
+      zoomScale = canvasSize.x / 800;
     } else {
-      zoomScale = canvasSize.y / 500;
+      zoomScale = canvasSize.y / 800;
     }
     camera.zoom = zoomScale;
   }

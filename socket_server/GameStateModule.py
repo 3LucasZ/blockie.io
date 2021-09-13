@@ -57,9 +57,10 @@ class GameState():
 
     async def forever_update_game(self):
         while True:
-            #collect game state
+            self.dict['data']['players'] = {}
+            #collect player states
             for player in self.playerSet:
-                self.dict['data']['players'].update(player.dict)
+                self.dict['data']['players'].add(player.dict)
             await self.broadcast(self.dict)
             await asyncio.sleep(1/self.fps)
 

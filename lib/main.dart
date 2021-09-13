@@ -12,6 +12,7 @@ void main() async {
     Map<String, dynamic> messageDecoded = jsonDecode(message);
     if (messageDecoded['type'] == 'startingData') {
       myGame = MyGame(startingData: messageDecoded['data']);
+      print('starting data received, starting game...');
       runApp(MyApp());
     } else if (messageDecoded['type'] == 'newPlayer') {
       myGame.loadNewPlayer(messageDecoded['data']);

@@ -25,7 +25,8 @@ class InventoryBar extends StatelessWidget {
       left: 0,
       child: Container(
         width: screenSize.width,
-        padding: EdgeInsets.symmetric(vertical: 15, horizontal: 100),
+        padding: EdgeInsets.symmetric(
+            vertical: 15, horizontal: screenSize.width * 3 / 5),
         child: Row(
           mainAxisSize: MainAxisSize.max,
           mainAxisAlignment: MainAxisAlignment.spaceBetween,

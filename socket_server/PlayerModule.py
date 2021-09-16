@@ -12,7 +12,8 @@ class Player():
                         'y':0
                     },
                     'object': 'wood',
-                    'angle': 0
+                    'angle': 0,
+                    'health': 100
                 }
             }
     def update(self, data):

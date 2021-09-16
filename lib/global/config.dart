@@ -1,1 +1,1 @@
-const int FPS = 60;
+const int FPS = 5;

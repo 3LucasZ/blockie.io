@@ -1,23 +1,26 @@
 import 'dart:math';
+import 'dart:ui';
 import 'package:flame/components.dart';
 import 'package:flame/game.dart';
+import 'package:flame/geometry.dart';
 import 'package:flame/sprite.dart';
-
-import 'package:flutter_flame_experiment/global/style.dart';
+import 'package:flutter_flame_experiment/global/myPlayer_state.dart';
 import 'package:flutter_flame_experiment/global/websocket.dart';
-import 'game_objects.dart';
+import 'package:flutter_flame_experiment/style/palette.dart';
+import 'package:flutter_flame_experiment/game/object_meta.dart';
 
-class Player extends SpriteComponent {
+class Player extends SpriteComponent with Hitbox, Collidable {
   //attributes
   int id;
   BaseGame gameRef;
-  GameObject object = none;
+  GameObjectMeta object = noneMeta;
   late Map<String, dynamic> data;
+  double health = 100;
 
   //rendering components
   SpriteComponent objectComponent = new SpriteComponent();
   TextComponent usernameComponent =
-      new TextComponent('hello', textRenderer: usernamePaint);
+      new TextComponent('hello', textRenderer: Palette.usernamePaint);
 
   Player(
       {required Sprite sprite,
@@ -35,6 +38,8 @@ class Player extends SpriteComponent {
     usernameComponent.anchor = Anchor.center;
     gameRef.add(objectComponent);
     gameRef.add(usernameComponent);
+    final hitbox = HitboxCircle(definition: 1);
+    addShape(hitbox);
   }
 
   @override
@@ -46,11 +51,12 @@ class Player extends SpriteComponent {
       position.x = data['position']['x'];
       position.y = data['position']['y'];
       angle = data['angle'];
-      object = getObjectByName(data['object']);
+      health = data['health'];
+      object = getMetaByName(data['object']);
       //render the username
       usernameComponent.position = Vector2(position.x, position.y - 50);
       //render the object being held
-      if (object != none) {
+      if (object != noneMeta) {
         objectComponent.size = Vector2(50, 50);
         objectComponent.sprite = Sprite(gameRef.images.fromCache(object.image));
         objectComponent.angle = angle;
@@ -59,7 +65,32 @@ class Player extends SpriteComponent {
       } else {
         objectComponent.size = Vector2(0, 0);
       }
+    } else {
+      remove();
     }
+  }
+
+  @override
+  render(Canvas c) {
+    //draw health bar
+    c.drawRRect(
+        RRect.fromRectAndRadius(
+            Rect.fromLTWH(position.x - 25, position.y + 30, 50, 5),
+            Radius.circular(2.5)),
+        Palette.grey2.paint());
+    if (health >= 0) {
+      c.drawRRect(
+          RRect.fromRectAndRadius(
+              Rect.fromLTWH(
+                  position.x - 25, position.y + 30, 50 * (health / 100), 5),
+              Radius.circular(2.5)),
+          health >= 66
+              ? Palette.green2.paint()
+              : health >= 33
+                  ? Palette.yellow.paint()
+                  : Palette.red2.paint());
+    }
+    super.render(c);
   }
 }
 
@@ -76,4 +107,28 @@ class MyPlayer extends Player {
             size: size,
             id: id,
             gameRef: gameRef);
+  @override
+  Future onLoad() async {
+    super.onLoad();
+  }
+
+  @override
+  void update(double dt) {
+    super.update(dt);
+  }
+
+  @override
+  void onCollision(Set<Vector2> intersectionPoints, Collidable other) {
+    print(other.runtimeType);
+    if (other.runtimeType.toString() == 'SpikeSprite') {
+      myHealth -= 0.1;
+    } else if (other.runtimeType.toString() == 'ArrowSprite') {
+      myHealth -= 10;
+    }
+  }
+
+  @override
+  void onCollisionEnd(Collidable other) {
+    //print("Collision ended!");
+  }
 }

@@ -1,20 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_flame_experiment/global/myPlayer_state.dart';
-import '../game/game_objects.dart';
+import 'package:flutter_flame_experiment/game/object_meta.dart';
 
 class InventoryBar extends StatelessWidget {
   InventoryBar({
     Key? key,
   }) : super(key: key);
   final List<Widget> inventorySquares = [
-    InventorySquare(none),
-    InventorySquare(wood),
-    InventorySquare(grass),
-    InventorySquare(wood),
-    InventorySquare(grass),
-    InventorySquare(wood),
-    InventorySquare(grass),
-    InventorySquare(wood),
+    InventorySquare(noneMeta),
+    InventorySquare(spikeMeta),
+    InventorySquare(grassMeta),
+    InventorySquare(woodMeta),
+    InventorySquare(spikeMeta),
+    InventorySquare(woodMeta),
+    InventorySquare(grassMeta),
+    InventorySquare(spikeMeta),
   ];
 
   @override
@@ -26,7 +26,7 @@ class InventoryBar extends StatelessWidget {
       child: Container(
         width: screenSize.width,
         padding: EdgeInsets.symmetric(
-            vertical: 15, horizontal: screenSize.width * 3 / 5),
+            vertical: 15, horizontal: screenSize.width * 1 / 5),
         child: Row(
           mainAxisSize: MainAxisSize.max,
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -38,8 +38,8 @@ class InventoryBar extends StatelessWidget {
 }
 
 class InventorySquare extends StatelessWidget {
-  final GameObject object;
-  InventorySquare(GameObject object) : object = object;
+  final GameObjectMeta object;
+  InventorySquare(GameObjectMeta object) : object = object;
 
   @override
   Widget build(BuildContext context) {

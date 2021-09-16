@@ -4,9 +4,9 @@ import 'package:flame/game.dart';
 import 'game/game.dart';
 import 'UI/inventory.dart';
 import 'UI/joystick.dart';
+import 'global/late.dart';
 import 'global/websocket.dart';
 
-late final MyGame myGame;
 void main() async {
   channel.stream.listen((message) async {
     Map<String, dynamic> messageDecoded = jsonDecode(message);
@@ -16,15 +16,26 @@ void main() async {
       runApp(MyApp());
     } else if (messageDecoded['type'] == 'newPlayer') {
       myGame.loadNewPlayer(messageDecoded['data']);
+      print('new player received');
     } else if (messageDecoded['type'] == 'removePlayer') {
+      print('remove player received');
     } else if (messageDecoded['type'] == 'gameState') {
       gameState = messageDecoded['data'];
+      if (verboseCounter == 0) {
+        print(gameState);
+      }
+      verboseCounter = (verboseCounter + 1) % 30;
+    } else if (messageDecoded['type'] == 'newObject') {
+      print('new object received');
+      myGame.loadNewObject(messageDecoded['data']);
     } else {
       print("data of type: " + messageDecoded['type'] + " is not supported.");
     }
     //print('received: ' + messageDecoded.toString());
   });
 }
+
+int verboseCounter = 0;
 
 class MyApp extends StatelessWidget {
   @override

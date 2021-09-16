@@ -1,12 +1,12 @@
 WS_SERVER_CONFIG:
-  IP: ''
+  IP: 'localhost'
   PORT: 5000
 
 CLIENT_CONFIG:
   ADDRESS: localhost:5000
 
 GAME_CONFIG:
-  FPS: 60
+  FPS: 5
   MAX_SPEED: 1
 
 

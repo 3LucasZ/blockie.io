@@ -50,6 +50,9 @@ class GameState():
                 if newData['type'] == 'playerState':
                     player.update(newData['data'])
                     print('recved', newData['data'])
+                elif newData['type'] == 'newObject':
+                    print('recved', newData['data'])
+                    await self.broadcast(newData)
                 else:
                     print('the received json data is unsupported.')
             except:
@@ -57,10 +60,9 @@ class GameState():
 
     async def forever_update_game(self):
         while True:
-            self.dict['data']['players'] = {}
             #collect player states
             for player in self.playerSet:
-                self.dict['data']['players'].add(player.dict)
+                self.dict['data']['players'].update(player.dict)
             await self.broadcast(self.dict)
             await asyncio.sleep(1/self.fps)
 
@@ -68,6 +70,7 @@ class GameState():
         self.playerSet.add(player)
     
     def remove_player(self, player):
+        del self.dict['data']['players'][str(player.id)]
         self.playerSet.remove(player)
 
     async def broadcast(self, data):

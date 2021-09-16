@@ -34,8 +34,8 @@ class _JoystickState extends State<Joystick> {
 
   Widget build(BuildContext context) {
     Size screenSize = MediaQuery.of(context).size;
-    outerSize = Offset(screenSize.width / 5, screenSize.width / 5);
-    innerSize = Offset(screenSize.height / 10, screenSize.height / 10);
+    outerSize = Offset(screenSize.width / 7, screenSize.width / 7);
+    innerSize = Offset(screenSize.width / 14, screenSize.width / 14);
     return Positioned(
       left: position.dx,
       bottom: position.dy,

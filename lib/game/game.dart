@@ -1,11 +1,18 @@
+import 'dart:ui';
+
 import 'package:flame/components.dart';
 import 'package:flame/game.dart';
+import 'package:flame/gestures.dart';
+import 'package:flame/palette.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_flame_experiment/game/game_objects.dart';
+import 'package:flutter_flame_experiment/global/late.dart';
 import 'package:flutter_flame_experiment/global/myPlayer_state.dart';
 import 'package:flutter_flame_experiment/global/websocket.dart';
 import 'player.dart';
 import 'package:flutter_flame_experiment/global/config.dart';
 
-class MyGame extends BaseGame with HasDraggableComponents {
+class MyGame extends BaseGame with TapDetector, HasCollidables {
   final Map<String, dynamic> startingData;
   MyGame({required Map<String, dynamic> startingData})
       : startingData = startingData;
@@ -16,8 +23,10 @@ class MyGame extends BaseGame with HasDraggableComponents {
     await images.load('player.png');
     await images.load('grass_tile.jpeg');
     await images.load('wood_tile.jpeg');
+    await images.load('spike.png');
+    await images.load('arrow.png');
     myId = startingData['id'];
-    MyPlayer myPlayer = MyPlayer(
+    myPlayer = MyPlayer(
         sprite: Sprite(images.fromCache('player.png')),
         size: Vector2(50, 50),
         position: Vector2(0, 0),
@@ -51,6 +60,11 @@ class MyGame extends BaseGame with HasDraggableComponents {
   }
 
   @override
+  void render(Canvas c) {
+    super.render(c);
+  }
+
+  @override
   void onResize(Vector2 canvasSize) {
     super.onResize(canvasSize);
     double zoomScale;
@@ -71,5 +85,19 @@ class MyGame extends BaseGame with HasDraggableComponents {
         gameRef: this);
     player.anchor = Anchor.center;
     add(player);
+  }
+
+  void loadNewObject(Map<String, dynamic> data) {
+    dynamic tile = createObject(data);
+    add(tile);
+  }
+
+  @override
+  void onTapDown(TapDownInfo event) {
+    if (holdingObject.type == 'placeable') {
+      publishNewObject(holdingObject.name, 25);
+    } else {
+      publishNewObject('arrow', 30);
+    }
   }
 }

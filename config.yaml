@@ -6,7 +6,7 @@ CLIENT_CONFIG:
   ADDRESS: localhost:5000
 
 GAME_CONFIG:
-  FPS: 5
+  FPS: 60
   MAX_SPEED: 1
 
 

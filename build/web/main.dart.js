@@ -33295,7 +33295,7 @@ s=this.a1
 s.H8(0,a)
 if(s.k3===0){r=t.N
 q=P.aC(["type","playerState","data",P.aC([C.h.h($.aaO),P.aC(["username","jeff","position",P.aC(["x",$.il.ai().dx.a[0]+$.JJ*Math.cos($.JH),"y",$.il.ai().dx.a[1]+$.JJ*Math.sin($.JH)],r,t.i),"angle",$.JH,"object",$.a5w().a,"health",$.JI],r,t.K)],r,t.of)],r,t.z)
-$.a2c().gxq().a.A(0,C.a1.uS(q,null))}s.k3=C.h.eB(s.k3+1,C.h.dc(12))
+$.a2c().gxq().a.A(0,C.a1.uS(q,null))}s.k3=C.h.eB(s.k3+1,C.h.dc(1))
 this.ax()},
 c3(){var s=K.D.prototype.gbc.call(this)
 this.rx=new P.a_(C.h.M(1/0,s.a,s.b),C.h.M(1/0,s.c,s.d))},

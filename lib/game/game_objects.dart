@@ -111,7 +111,7 @@ class ArrowSprite extends SpriteComponent with Hitbox, Collidable {
   @override
   onLoad() {
     super.onLoad();
-    anchor = Anchor.center;
+    anchor = Anchor.centerLeft;
     angle = spriteAngle;
     final hitbox = HitboxRectangle(relation: Vector2(1, 1));
     addShape(hitbox);

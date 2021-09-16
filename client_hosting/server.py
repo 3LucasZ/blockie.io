@@ -11,9 +11,11 @@ def return_html():
 
 @app.route("/<path:name>")
 def return_static(name):
-    if name[0:6] != '/assets':
-        name = '/assets' + name
-    return send_from_directory('../build/web', name)
+    pathname = name
+    print(pathname[0:13])
+    if pathname[0:13] == 'assets/images':
+        pathname = 'assets/' + pathname
+    return send_from_directory('../build/web', pathname)
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5050)

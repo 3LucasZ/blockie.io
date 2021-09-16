@@ -11,6 +11,8 @@ def return_html():
 
 @app.route("/<path:name>")
 def return_static(name):
+    if name[0:6] != '/assets':
+        name = '/assets' + name
     return send_from_directory('../build/web', name)
 
 if __name__ == '__main__':

@@ -21,7 +21,7 @@ class GameState():
         self.objectsData = {
             'type': 'objectsData',
             'data': {
-                'objects': {}
+                'objects': []
             }
         }
         self.playerIdIndex = 1
@@ -41,7 +41,7 @@ class GameState():
             'data': {
                 'id': self.playerIdIndex,
                 'id_array': [player.id for player in self.playerSet],
-                'objects': self.objectsData['data']
+                'objects': self.objectsData['data']['objects']
             }
         }))
         #setup new player
@@ -62,12 +62,13 @@ class GameState():
                     print('recved', newData['data'])
                     self.objectIdIndex += 1
                     newData['data']['id'] = self.objectIdIndex
-                    self.objectsData['data']['objects'].update(newData['data'])
+                    self.objectsData['data']['objects'].append(newData['data'])
                     await self.broadcast(newData)
                 else:
                     print('the received json data is unsupported.')
             except:
                 continue
+            print("Listening on player:", player.id)
 
     async def forever_update_game(self):
         while True:
@@ -97,5 +98,4 @@ class GameState():
                 print("A player disconnected")
         for player in playersToRemove:
             self.remove_player(player)
-
         print('broadcasted:', jsonData)

@@ -49,25 +49,33 @@ class Player extends SpriteComponent with Hitbox, Collidable {
     //debugMode = true;
   }
 
+  bool hasReceived = false;
   @override
   void update(double dt) {
     super.update(dt);
-    //update player data
     if (gameState['players'][id.toString()] != null) {
-      serverData = gameState['players'][id.toString()];
-      position.x = serverData['position']['x'];
-      position.y = serverData['position']['y'];
-      angle = serverData['angle'];
-      health = serverData['health'];
-      objectComponent.changeMeta(getMetaByName(serverData['object']));
-      //render the username
-      usernameComponent.position = Vector2(position.x, position.y - 30);
-      //update
-      objectComponent.angle = angle;
-      objectComponent.update(dt);
-    } else {
-      objectComponent.remove();
-      remove();
+      hasReceived = true;
+    }
+    if (hasReceived) {
+      //update player data
+      if (gameState['players'][id.toString()] != null) {
+        serverData = gameState['players'][id.toString()];
+        position.x = serverData['position']['x'];
+        position.y = serverData['position']['y'];
+        angle = serverData['angle'];
+        health = serverData['health'];
+        objectComponent.changeMeta(getMetaByName(serverData['object']));
+        //render the username
+        usernameComponent.position = Vector2(position.x, position.y - 20);
+        //update
+        objectComponent.angle = angle;
+        objectComponent.update(dt);
+      } else {
+        print("No data received on player " + id.toString() + "... Removing");
+        objectComponent.remove();
+        usernameComponent.remove();
+        remove();
+      }
     }
   }
 

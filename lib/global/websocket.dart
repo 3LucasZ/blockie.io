@@ -7,8 +7,8 @@ import 'late.dart';
 import 'myPlayer_state.dart';
 
 //const String serverAddress = 'localhost:5000';
-const String serverAddress = '192.168.1.139:5000';
-//const String serverAddress = '192.168.1.144:5000';
+//const String serverAddress = '192.168.1.139:5000';
+const String serverAddress = '192.168.1.144:5000';
 var channel = WebSocketChannel.connect(Uri.parse('ws://' + serverAddress));
 Map<String, dynamic> gameState = {};
 

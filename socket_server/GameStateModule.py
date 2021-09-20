@@ -11,33 +11,41 @@ class GameState():
     def __init__(self):
         self.fps = config['GAME_CONFIG']['FPS']
         self.playerSet = set()
-        self.dict = {
-            'type': 'gameState',
+        self.playersData = {
+            'type': 'playersData',
             'data': {
-                'players':{
+                'players': {
                 }
             }
         }
-        self.idIndex = 1
+        self.objectsData = {
+            'type': 'objectsData',
+            'data': {
+                'objects': {}
+            }
+        }
+        self.playerIdIndex = 1
+        self.objectIdIndex = 1
     
     async def handle_connections(self, newWebsocket, path):
         print('new connection:', newWebsocket)
-        self.idIndex += 1
+        self.playerIdIndex += 1
         #broadcast new player
         await self.broadcast({
             'type': 'newPlayer',
-            'data': self.idIndex
+            'data': self.playerIdIndex
         })
         #send starting data to new player
         await newWebsocket.send(json.dumps({
             'type': 'startingData',
             'data': {
-                'id': self.idIndex,
-                'id_array': [player.id for player in self.playerSet]
+                'id': self.playerIdIndex,
+                'id_array': [player.id for player in self.playerSet],
+                'objects': self.objectsData['data']
             }
         }))
         #setup new player
-        newPlayer = PlayerModule.Player(id=self.idIndex, websocket=newWebsocket)
+        newPlayer = PlayerModule.Player(id=self.playerIdIndex, websocket=newWebsocket)
         self.add_player(newPlayer)
         #create a listener for the connection
         await self.listen_on(newPlayer)
@@ -52,6 +60,9 @@ class GameState():
                     print('recved', newData['data'])
                 elif newData['type'] == 'newObject':
                     print('recved', newData['data'])
+                    self.objectIdIndex += 1
+                    newData['data']['id'] = self.objectIdIndex
+                    self.objectsData['data']['objects'].update(newData['data'])
                     await self.broadcast(newData)
                 else:
                     print('the received json data is unsupported.')
@@ -62,15 +73,15 @@ class GameState():
         while True:
             #collect player states
             for player in self.playerSet:
-                self.dict['data']['players'].update(player.dict)
-            await self.broadcast(self.dict)
+                self.playersData['data']['players'].update(player.dict)
+            await self.broadcast(self.playersData)
             await asyncio.sleep(1/self.fps)
 
     def add_player(self, player):
         self.playerSet.add(player)
     
     def remove_player(self, player):
-        del self.dict['data']['players'][str(player.id)]
+        del self.playersData['data']['players'][str(player.id)]
         self.playerSet.remove(player)
 
     async def broadcast(self, data):

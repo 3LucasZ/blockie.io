@@ -1,26 +1,28 @@
 import 'dart:math';
 import 'dart:ui';
 import 'package:flame/components.dart';
+import 'package:flame/flame.dart';
 import 'package:flame/game.dart';
 import 'package:flame/geometry.dart';
 import 'package:flame/sprite.dart';
+import 'package:flutter_flame_experiment/game/selected.dart';
 import 'package:flutter_flame_experiment/global/myPlayer_state.dart';
 import 'package:flutter_flame_experiment/global/websocket.dart';
 import 'package:flutter_flame_experiment/style/palette.dart';
 import 'package:flutter_flame_experiment/game/object_meta.dart';
 
+import 'game_objects/game_objects.dart';
+
 class Player extends SpriteComponent with Hitbox, Collidable {
   //attributes
   int id;
   BaseGame gameRef;
-  GameObjectMeta object = noneMeta;
-  late Map<String, dynamic> data;
+  late Map<String, dynamic> serverData;
   double health = 100;
 
   //rendering components
-  SpriteComponent objectComponent = new SpriteComponent();
-  TextComponent usernameComponent =
-      new TextComponent('hello', textRenderer: Palette.usernamePaint);
+  late SelectedObject objectComponent;
+  late TextComponent usernameComponent;
 
   Player(
       {required Sprite sprite,
@@ -34,12 +36,17 @@ class Player extends SpriteComponent with Hitbox, Collidable {
 
   @override
   Future onLoad() async {
+    objectComponent =
+        new SelectedObject(myPlayerParent: false, positionRef: position);
+    usernameComponent =
+        new TextComponent('hello', textRenderer: Palette.usernamePaint);
     objectComponent.anchor = Anchor.center;
-    usernameComponent.anchor = Anchor.center;
+    usernameComponent.anchor = Anchor.bottomCenter;
     gameRef.add(objectComponent);
     gameRef.add(usernameComponent);
-    final hitbox = HitboxCircle(definition: 1);
+    final hitbox = HitboxCircle(definition: 0.8);
     addShape(hitbox);
+    //debugMode = true;
   }
 
   @override
@@ -47,25 +54,19 @@ class Player extends SpriteComponent with Hitbox, Collidable {
     super.update(dt);
     //update player data
     if (gameState['players'][id.toString()] != null) {
-      data = gameState['players'][id.toString()];
-      position.x = data['position']['x'];
-      position.y = data['position']['y'];
-      angle = data['angle'];
-      health = data['health'];
-      object = getMetaByName(data['object']);
+      serverData = gameState['players'][id.toString()];
+      position.x = serverData['position']['x'];
+      position.y = serverData['position']['y'];
+      angle = serverData['angle'];
+      health = serverData['health'];
+      objectComponent.changeMeta(getMetaByName(serverData['object']));
       //render the username
-      usernameComponent.position = Vector2(position.x, position.y - 50);
-      //render the object being held
-      if (object != noneMeta) {
-        objectComponent.size = Vector2(50, 50);
-        objectComponent.sprite = Sprite(gameRef.images.fromCache(object.image));
-        objectComponent.angle = angle;
-        objectComponent.position =
-            Vector2(position.x + 50 * cos(angle), position.y + 50 * sin(angle));
-      } else {
-        objectComponent.size = Vector2(0, 0);
-      }
+      usernameComponent.position = Vector2(position.x, position.y - 30);
+      //update
+      objectComponent.angle = angle;
+      objectComponent.update(dt);
     } else {
+      objectComponent.remove();
       remove();
     }
   }
@@ -107,9 +108,14 @@ class MyPlayer extends Player {
             size: size,
             id: id,
             gameRef: gameRef);
+
   @override
   Future onLoad() async {
     super.onLoad();
+    objectComponent.remove();
+    objectComponent =
+        new SelectedObject(myPlayerParent: true, positionRef: position);
+    gameRef.add(objectComponent);
   }
 
   @override
@@ -119,11 +125,15 @@ class MyPlayer extends Player {
 
   @override
   void onCollision(Set<Vector2> intersectionPoints, Collidable other) {
-    print(other.runtimeType);
-    if (other.runtimeType.toString() == 'SpikeSprite') {
-      myHealth -= 0.1;
-    } else if (other.runtimeType.toString() == 'ArrowSprite') {
-      myHealth -= 10;
+    switch (other.runtimeType) {
+      case SpikeSprite:
+        print('SpikeSprite was hit');
+        myHealth -= 0.1;
+        break;
+      case ArrowSprite:
+        print('Arrow was hit');
+        myHealth -= 10;
+        break;
     }
   }
 

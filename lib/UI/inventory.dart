@@ -8,13 +8,13 @@ class InventoryBar extends StatelessWidget {
   }) : super(key: key);
   final List<Widget> inventorySquares = [
     InventorySquare(noneMeta),
-    InventorySquare(spikeMeta),
+    InventorySquare(bowMeta),
     InventorySquare(grassMeta),
     InventorySquare(woodMeta),
     InventorySquare(spikeMeta),
-    InventorySquare(woodMeta),
-    InventorySquare(grassMeta),
-    InventorySquare(spikeMeta),
+    InventorySquare(noneMeta),
+    InventorySquare(noneMeta),
+    InventorySquare(noneMeta),
   ];
 
   @override

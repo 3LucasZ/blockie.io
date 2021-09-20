@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flame/game.dart';
+import 'UI/quit.dart';
 import 'game/game.dart';
 import 'UI/inventory.dart';
 import 'UI/joystick.dart';
@@ -13,18 +14,19 @@ void main() async {
     if (messageDecoded['type'] == 'startingData') {
       myGame = MyGame(startingData: messageDecoded['data']);
       print('starting data received, starting game...');
+      print(messageDecoded['data']);
       runApp(MyApp());
     } else if (messageDecoded['type'] == 'newPlayer') {
       myGame.loadNewPlayer(messageDecoded['data']);
       print('new player received');
     } else if (messageDecoded['type'] == 'removePlayer') {
       print('remove player received');
-    } else if (messageDecoded['type'] == 'gameState') {
+    } else if (messageDecoded['type'] == 'playersData') {
       gameState = messageDecoded['data'];
       if (verboseCounter == 0) {
         print(gameState);
       }
-      verboseCounter = (verboseCounter + 1) % 30;
+      verboseCounter = (verboseCounter + 1) % 300;
     } else if (messageDecoded['type'] == 'newObject') {
       print('new object received');
       myGame.loadNewObject(messageDecoded['data']);
@@ -48,6 +50,7 @@ class MyApp extends StatelessWidget {
             GameWidget(game: myGame),
             InventoryBar(),
             Joystick(),
+            QuitButton(),
           ],
         ),
       ),

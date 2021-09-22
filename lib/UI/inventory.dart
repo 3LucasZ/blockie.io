@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_flame_experiment/global/late.dart';
 import 'package:flutter_flame_experiment/global/myPlayer_state.dart';
 import 'package:flutter_flame_experiment/game/object_meta.dart';
 
@@ -12,14 +13,14 @@ class InventoryBar extends StatelessWidget {
     InventorySquare(grassMeta),
     InventorySquare(woodMeta),
     InventorySquare(spikeMeta),
-    InventorySquare(noneMeta),
+    InventorySquare(katanaMeta),
     InventorySquare(noneMeta),
     InventorySquare(noneMeta),
   ];
 
   @override
   Widget build(BuildContext context) {
-    Size screenSize = MediaQuery.of(context).size;
+    screenSize = MediaQuery.of(context).size;
     return Positioned(
       bottom: 0,
       left: 0,
@@ -43,7 +44,6 @@ class InventorySquare extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    Size screenSize = MediaQuery.of(context).size;
     double tileSize = screenSize.width / 16;
     return GestureDetector(
       onTap: () {

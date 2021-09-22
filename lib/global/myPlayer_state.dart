@@ -4,6 +4,7 @@ import 'package:flutter_flame_experiment/game/player.dart';
 import 'package:flutter_flame_experiment/game/object_meta.dart';
 
 GameObjectMeta holdingObject = noneMeta;
+double myPositionAngle = 0;
 double myAngle = 0;
 double mySpeed = 0;
 double myMaxSpeed = 3;

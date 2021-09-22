@@ -34,6 +34,10 @@ class SelectedObject extends SpriteComponent with Hitbox, Collidable {
     size = Vector2(meta.width, meta.height);
     sprite = Sprite(Flame.images.fromCache(meta.image));
     position = positionRef + getDirectionVector(angle, 25);
+    if (meta.name == 'katana') {
+      position = positionRef + getDirectionVector(angle, 15);
+      position += getDirectionVector(angle + 90, 30);
+    }
   }
 
   @override

@@ -16,7 +16,7 @@ class _JoystickState extends State<Joystick> {
   Offset delta = Offset.zero;
 
   void updateDelta(Offset newDelta) {
-    myAngle = delta.direction;
+    myPositionAngle = delta.direction;
     setState(() {
       delta = newDelta;
     });

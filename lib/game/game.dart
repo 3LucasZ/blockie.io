@@ -1,11 +1,14 @@
+import 'dart:math';
 import 'dart:ui';
 
 import 'package:flame/components.dart';
 import 'package:flame/flame.dart';
 import 'package:flame/game.dart';
 import 'package:flame/gestures.dart';
+import 'package:flame/keyboard.dart';
 import 'package:flame/palette.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_flame_experiment/game/game_objects/game_objects.dart';
 import 'package:flutter_flame_experiment/global/late.dart';
 import 'package:flutter_flame_experiment/global/myPlayer_state.dart';
@@ -16,7 +19,7 @@ import 'object_meta.dart';
 import 'player.dart';
 import 'package:flutter_flame_experiment/global/config.dart';
 
-class MyGame extends BaseGame with TapDetector, HasCollidables {
+class MyGame extends BaseGame with TapDetector, HasCollidables, KeyboardEvents {
   final Map<String, dynamic> startingData;
   //late BackgroundLayer backgroundLayer;
   @override
@@ -96,8 +99,36 @@ class MyGame extends BaseGame with TapDetector, HasCollidables {
 
   @override
   void onTapDown(TapDownInfo event) {
-    if (canPlace) {
+    if (holdingObject.type == 'placeable') {
+      if (canPlace) {
+        holdingObject.activate();
+      }
+    } else {
       holdingObject.activate();
+    }
+  }
+
+  @override
+  void onKeyEvent(RawKeyEvent event) {
+    final isKeyDown = event is RawKeyDownEvent;
+    if (isKeyDown) {
+      mySpeed = myMaxSpeed;
+      //HANDLE WASD PRESSES -> PLAYER POSITION ROTATION
+      if (event.logicalKey == LogicalKeyboardKey.arrowUp ||
+          event.logicalKey == LogicalKeyboardKey.keyW) {
+        myPositionAngle = -1 * pi / 2;
+      } else if (event.logicalKey == LogicalKeyboardKey.arrowRight ||
+          event.logicalKey == LogicalKeyboardKey.keyD) {
+        myPositionAngle = 0;
+      } else if (event.logicalKey == LogicalKeyboardKey.arrowDown ||
+          event.logicalKey == LogicalKeyboardKey.keyS) {
+        myPositionAngle = pi / 2;
+      } else if (event.logicalKey == LogicalKeyboardKey.arrowLeft ||
+          event.logicalKey == LogicalKeyboardKey.keyA) {
+        myPositionAngle = -1 * pi;
+      }
+    } else {
+      mySpeed = 0;
     }
   }
 }

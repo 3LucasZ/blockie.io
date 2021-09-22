@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flame/game.dart';
+import 'UI/joystick2.dart';
 import 'UI/quit.dart';
 import 'game/game.dart';
 import 'UI/inventory.dart';
@@ -47,9 +48,13 @@ class MyApp extends StatelessWidget {
         body: Stack(
           fit: StackFit.expand,
           children: [
-            GameWidget(game: myGame),
+            MouseRegion(
+              child: GameWidget(game: myGame),
+              onHover: processMouse,
+            ),
             InventoryBar(),
             Joystick(),
+            Joystick2(),
             QuitButton(),
           ],
         ),

@@ -19,8 +19,8 @@ void publishPlayerState() {
       myId.toString(): {
         'username': 'jeff',
         'position': {
-          'x': myPlayer.position.x + (mySpeed * cos(myAngle)),
-          'y': myPlayer.position.y + (mySpeed * sin(myAngle))
+          'x': myPlayer.position.x + (mySpeed * cos(myPositionAngle)),
+          'y': myPlayer.position.y + (mySpeed * sin(myPositionAngle))
         },
         'angle': myAngle,
         'object': holdingObject.name,
@@ -42,7 +42,7 @@ void publishNewObject(String name, double distanceFromPlayer) {
         'y': myPlayer.position.y +
             getDirectionVector(myPlayer.angle, distanceFromPlayer).y
       },
-      'angle': myAngle
+      'angle': myPlayer.angle
     }
   };
   channel.sink.add(jsonEncode(newObject));

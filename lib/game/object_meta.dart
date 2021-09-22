@@ -71,6 +71,17 @@ GameObjectMeta bowMeta = new GameObjectMeta(
     print("Shot an arrow!");
   },
 );
+GameObjectMeta katanaMeta = new GameObjectMeta(
+  name: 'katana',
+  image: 'katana.png',
+  type: 'tool',
+  height: 102.7,
+  width: 20,
+  activate: () {
+    publishNewObject('arrow', 30);
+    print("Shot an arrow!");
+  },
+);
 //projectiles
 GameObjectMeta arrowMeta = new GameObjectMeta(
   name: 'arrow',
@@ -93,6 +104,8 @@ GameObjectMeta getMetaByName(String name) {
     return bowMeta;
   } else if (name == 'arrow') {
     return arrowMeta;
+  } else if (name == 'katana') {
+    return katanaMeta;
   } else {
     return noneMeta;
   }

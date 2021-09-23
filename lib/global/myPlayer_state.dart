@@ -10,6 +10,8 @@ double mySpeed = 0;
 double myMaxSpeed = 3;
 double myHealth = 100;
 bool canPlace = true;
+bool repel = false;
+double m = 0;
 /*List<Vector2> myPreviousPositions = [
   Vector2(0, 0),
   Vector2(0, 0),

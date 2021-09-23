@@ -6,6 +6,7 @@ import 'package:flutter_flame_experiment/global/late.dart';
 import 'package:flutter_flame_experiment/game/object_meta.dart';
 
 import '../../utils.dart';
+import '../player.dart';
 
 List<String> tiles = ['wood', 'grass'];
 List<String> rotatingSpikes = ['spike'];
@@ -100,5 +101,12 @@ class ArrowSprite extends ObjectSprite {
         //print("Hit an object: ," + other.runtimeType.toString());
         remove();
     }
+  }
+}
+
+mixin HandlePlayerCollide implements Collidable {
+  @override
+  void onCollision(Set<Vector2> intersectionPoints, Collidable other) {
+    if (other.runtimeType == MyPlayer) {}
   }
 }

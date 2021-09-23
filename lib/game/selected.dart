@@ -23,7 +23,7 @@ class SelectedObject extends SpriteComponent with Hitbox, Collidable {
   @override
   Future<void> onLoad() async {
     super.onLoad();
-    anchor = Anchor.centerLeft;
+    anchor = Anchor.center;
     final hitbox = HitboxRectangle(relation: Vector2(1, 1));
     addShape(hitbox);
   }
@@ -35,8 +35,9 @@ class SelectedObject extends SpriteComponent with Hitbox, Collidable {
     sprite = Sprite(Flame.images.fromCache(meta.image));
     position = positionRef + getDirectionVector(angle, 25);
     if (meta.name == 'katana') {
-      position = positionRef + getDirectionVector(angle, 15);
-      position += getDirectionVector(angle + 90, 30);
+      position =
+          positionRef + getDirectionVector(angle, 25 + katanaMeta.width / 2);
+      position += getDirectionVector(angle + 90, 40);
     }
   }
 

@@ -3,26 +3,34 @@ import 'dart:math';
 import 'package:flutter_flame_experiment/game/game.dart';
 import 'package:flutter_flame_experiment/utils.dart';
 import 'package:web_socket_channel/web_socket_channel.dart';
+import 'config.dart';
 import 'late.dart';
 import 'myPlayer_state.dart';
 
-//const String serverAddress = 'localhost:5000';
-//const String serverAddress = '192.168.1.139:5000';
-const String serverAddress = '192.168.1.144:5000';
 var channel = WebSocketChannel.connect(Uri.parse('ws://' + serverAddress));
 Map<String, dynamic> gameState = {};
 
 void publishPlayerState() {
+  double xToPublish;
+  double yToPublish;
+  if (repel) {
+    xToPublish =
+        myPlayer.position.x + getDirectionVector(myPositionAngle + pi, m).x;
+    yToPublish =
+        myPlayer.position.y + getDirectionVector(myPositionAngle + pi, m).y;
+  } else {
+    xToPublish = myPlayer.position.x + (mySpeed * cos(myPositionAngle));
+    yToPublish = myPlayer.position.y + (mySpeed * sin(myPositionAngle));
+  }
+  double angleToPublish = myAngle;
+
   Map<String, dynamic> myPlayerState = {
     'type': 'playerState',
     'data': {
       myId.toString(): {
         'username': 'jeff',
-        'position': {
-          'x': myPlayer.position.x + (mySpeed * cos(myPositionAngle)),
-          'y': myPlayer.position.y + (mySpeed * sin(myPositionAngle))
-        },
-        'angle': myAngle,
+        'position': {'x': xToPublish, 'y': yToPublish},
+        'angle': angleToPublish,
         'object': holdingObject.name,
         'health': myHealth
       }

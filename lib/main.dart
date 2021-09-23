@@ -20,8 +20,6 @@ void main() async {
     } else if (messageDecoded['type'] == 'newPlayer') {
       myGame.loadNewPlayer(messageDecoded['data']);
       print('new player received');
-    } else if (messageDecoded['type'] == 'removePlayer') {
-      print('remove player received');
     } else if (messageDecoded['type'] == 'playersData') {
       gameState = messageDecoded['data'];
       if (verboseCounter == 0) {
@@ -31,6 +29,8 @@ void main() async {
     } else if (messageDecoded['type'] == 'newObject') {
       print('new object received');
       myGame.loadNewObject(messageDecoded['data']);
+    } else if (messageDecoded['type'] == 'removeObject') {
+      print('remove object received');
     } else {
       print("data of type: " + messageDecoded['type'] + " is not supported.");
     }

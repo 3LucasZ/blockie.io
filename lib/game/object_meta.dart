@@ -75,13 +75,11 @@ GameObjectMeta katanaMeta = new GameObjectMeta(
   name: 'katana',
   image: 'katana.png',
   type: 'tool',
-  height: 102.7,
-  width: 20,
-  activate: () {
-    publishNewObject('arrow', 30);
-    print("Shot an arrow!");
-  },
+  height: 120,
+  width: 24,
+  activate: () {},
 );
+List<int> swipeAnimationArray = [];
 //projectiles
 GameObjectMeta arrowMeta = new GameObjectMeta(
   name: 'arrow',

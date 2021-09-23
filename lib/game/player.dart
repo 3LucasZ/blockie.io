@@ -11,6 +11,7 @@ import 'package:flutter_flame_experiment/global/websocket.dart';
 import 'package:flutter_flame_experiment/style/palette.dart';
 import 'package:flutter_flame_experiment/game/object_meta.dart';
 
+import '../utils.dart';
 import 'game_objects/game_objects.dart';
 
 class Player extends SpriteComponent with Hitbox, Collidable {
@@ -142,11 +143,22 @@ class MyPlayer extends Player {
         print('Arrow was hit');
         myHealth -= 10;
         break;
+      case TileSprite:
+        print("Map Object was hit");
+        repel = true;
+        Vector2 u = position - other.position;
+        Vector2 v = getDirectionVector(-1 * myPositionAngle, 1);
+        double a = (pow(u.x, 2) + pow(u.y, 2)).toDouble();
+        double b = (2 * u.x * v.x + 2 * u.y * v.y);
+        double c = (pow(u.x, 2) + pow(u.y, 2) - pow(36 + 50, 2)).toDouble();
+        m = (-1 * b + sqrt(pow(b, 2) - 4 * a * c)) / (2 * a);
+        print(m);
+        break;
     }
   }
 
   @override
   void onCollisionEnd(Collidable other) {
-    //print("Collision ended!");
+    repel = false;
   }
 }

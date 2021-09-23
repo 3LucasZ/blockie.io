@@ -97,6 +97,8 @@ class MyGame extends BaseGame with TapDetector, HasCollidables, KeyboardEvents {
     add(object);
   }
 
+  void removeObject(int id) {}
+
   @override
   void onTapDown(TapDownInfo event) {
     if (holdingObject.type == 'placeable') {
@@ -113,7 +115,7 @@ class MyGame extends BaseGame with TapDetector, HasCollidables, KeyboardEvents {
     final isKeyDown = event is RawKeyDownEvent;
     if (isKeyDown) {
       mySpeed = myMaxSpeed;
-      //HANDLE WASD PRESSES -> PLAYER POSITION ROTATION
+      //HANDLE WASD/ARROW PRESSES -> PLAYER POSITION ROTATION
       if (event.logicalKey == LogicalKeyboardKey.arrowUp ||
           event.logicalKey == LogicalKeyboardKey.keyW) {
         myPositionAngle = -1 * pi / 2;

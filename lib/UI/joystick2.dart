@@ -1,7 +1,7 @@
 import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:flutter_flame_experiment/global/late.dart';
-import 'package:flutter_flame_experiment/global/myPlayer_state.dart';
+import 'package:flutter_flame_experiment/global/my_player_state.dart';
 
 class Joystick2 extends StatefulWidget {
   const Joystick2({Key? key}) : super(key: key);

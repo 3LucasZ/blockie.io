@@ -5,7 +5,7 @@ import 'package:flutter_flame_experiment/utils.dart';
 import 'package:web_socket_channel/web_socket_channel.dart';
 import 'config.dart';
 import 'late.dart';
-import 'myPlayer_state.dart';
+import 'my_player_state.dart';
 
 var channel = WebSocketChannel.connect(Uri.parse('ws://' + serverAddress));
 Map<String, dynamic> gameState = {};
@@ -14,15 +14,15 @@ void publishPlayerState() {
   double xToPublish;
   double yToPublish;
   if (repel) {
-    xToPublish =
-        myPlayer.position.x + getDirectionVector(myPositionAngle + pi, m).x;
-    yToPublish =
-        myPlayer.position.y + getDirectionVector(myPositionAngle + pi, m).y;
+    xToPublish = myPlayer.position.x +
+        getDirectionVector(myPositionAngle + pi, repelDistance).x;
+    yToPublish = myPlayer.position.y +
+        getDirectionVector(myPositionAngle + pi, repelDistance).y;
   } else {
     xToPublish = myPlayer.position.x + (mySpeed * cos(myPositionAngle));
     yToPublish = myPlayer.position.y + (mySpeed * sin(myPositionAngle));
   }
-  double angleToPublish = myAngle;
+  double angleToPublish = myAngle + myAngleOffset;
 
   Map<String, dynamic> myPlayerState = {
     'type': 'playerState',
@@ -31,7 +31,7 @@ void publishPlayerState() {
         'username': 'jeff',
         'position': {'x': xToPublish, 'y': yToPublish},
         'angle': angleToPublish,
-        'object': holdingObject.name,
+        'object': mySelectedMeta.name,
         'health': myHealth
       }
     }

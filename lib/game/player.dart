@@ -6,7 +6,7 @@ import 'package:flame/game.dart';
 import 'package:flame/geometry.dart';
 import 'package:flame/sprite.dart';
 import 'package:flutter_flame_experiment/game/selected.dart';
-import 'package:flutter_flame_experiment/global/myPlayer_state.dart';
+import 'package:flutter_flame_experiment/global/my_player_state.dart';
 import 'package:flutter_flame_experiment/global/websocket.dart';
 import 'package:flutter_flame_experiment/style/palette.dart';
 import 'package:flutter_flame_experiment/game/object_meta.dart';
@@ -143,6 +143,13 @@ class MyPlayer extends Player {
         print('Arrow was hit');
         myHealth -= 10;
         break;
+      case SelectedObject:
+        if (other is SelectedObject) {
+          if (other.meta.name == 'activeKatana') {
+            myHealth -= 0.5;
+          }
+        }
+        break;
       case TileSprite:
         print("Map Object was hit");
         repel = true;
@@ -151,8 +158,8 @@ class MyPlayer extends Player {
         double a = (pow(u.x, 2) + pow(u.y, 2)).toDouble();
         double b = (2 * u.x * v.x + 2 * u.y * v.y);
         double c = (pow(u.x, 2) + pow(u.y, 2) - pow(36 + 50, 2)).toDouble();
-        m = (-1 * b + sqrt(pow(b, 2) - 4 * a * c)) / (2 * a);
-        print(m);
+        repelDistance = (-1 * b + sqrt(pow(b, 2) - 4 * a * c)) / (2 * a);
+        print(repelDistance);
         break;
     }
   }

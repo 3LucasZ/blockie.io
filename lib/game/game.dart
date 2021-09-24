@@ -11,7 +11,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_flame_experiment/game/game_objects/game_objects.dart';
 import 'package:flutter_flame_experiment/global/late.dart';
-import 'package:flutter_flame_experiment/global/myPlayer_state.dart';
+import 'package:flutter_flame_experiment/global/my_player_state.dart';
 import 'package:flutter_flame_experiment/global/websocket.dart';
 import '../utils.dart';
 import 'background.dart';
@@ -101,12 +101,12 @@ class MyGame extends BaseGame with TapDetector, HasCollidables, KeyboardEvents {
 
   @override
   void onTapDown(TapDownInfo event) {
-    if (holdingObject.type == 'placeable') {
+    if (mySelectedMeta.type == 'placeable') {
       if (canPlace) {
-        holdingObject.activate();
+        mySelectedMeta.activate();
       }
     } else {
-      holdingObject.activate();
+      mySelectedMeta.activate();
     }
   }
 

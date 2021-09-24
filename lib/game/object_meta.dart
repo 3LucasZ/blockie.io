@@ -1,4 +1,6 @@
-import 'package:flutter_flame_experiment/global/myPlayer_state.dart';
+import 'dart:math';
+
+import 'package:flutter_flame_experiment/global/my_player_state.dart';
 import 'package:flutter_flame_experiment/global/websocket.dart';
 
 class GameObjectMeta {
@@ -30,7 +32,7 @@ GameObjectMeta grassMeta = new GameObjectMeta(
   type: 'placeable',
   activate: () {
     publishNewObject('grass', 25);
-    holdingObject = noneMeta;
+    mySelectedMeta = noneMeta;
   },
 );
 GameObjectMeta woodMeta = new GameObjectMeta(
@@ -39,7 +41,7 @@ GameObjectMeta woodMeta = new GameObjectMeta(
   type: 'placeable',
   activate: () {
     publishNewObject('wood', 25);
-    holdingObject = noneMeta;
+    mySelectedMeta = noneMeta;
   },
 );
 //misc
@@ -56,7 +58,7 @@ GameObjectMeta spikeMeta = new GameObjectMeta(
   type: 'placeable',
   activate: () {
     publishNewObject('spike', 50);
-    holdingObject = noneMeta;
+    mySelectedMeta = noneMeta;
   },
 );
 //tools
@@ -77,9 +79,37 @@ GameObjectMeta katanaMeta = new GameObjectMeta(
   type: 'tool',
   height: 120,
   width: 24,
-  activate: () {},
+  activate: () {
+    mySelectedMeta = activeKatanaMeta;
+    mySpin();
+    print('mySpin is done!');
+    mySelectedMeta = katanaMeta;
+  },
 );
-List<int> swipeAnimationArray = [];
+GameObjectMeta activeKatanaMeta = new GameObjectMeta(
+    name: 'activeKatana',
+    image: 'katana.png',
+    type: 'tool',
+    height: 120,
+    width: 24,
+    activate: () {});
+
+void mySpin() async {
+  if (!inSpin) {
+    inSpin = true;
+    myAngleOffset = 0;
+    for (int i = 1; i <= 10; i++) {
+      await Future.delayed(Duration(milliseconds: 15));
+      myAngleOffset -= ((pi / 100) + i * (pi / 250));
+    }
+    for (int i = 10; i >= 1; i--) {
+      await Future.delayed(Duration(milliseconds: 15));
+      myAngleOffset += ((pi / 100) + i * (pi / 250));
+    }
+    inSpin = false;
+  }
+}
+
 //projectiles
 GameObjectMeta arrowMeta = new GameObjectMeta(
   name: 'arrow',
@@ -104,7 +134,10 @@ GameObjectMeta getMetaByName(String name) {
     return arrowMeta;
   } else if (name == 'katana') {
     return katanaMeta;
+  } else if (name == 'activeKatana') {
+    return activeKatanaMeta;
   } else {
+    //print(name + ' not found!');
     return noneMeta;
   }
 }

@@ -4,7 +4,7 @@ import 'package:flame/components.dart';
 import 'package:flame/flame.dart';
 import 'package:flame/geometry.dart';
 import 'package:flutter_flame_experiment/game/player.dart';
-import 'package:flutter_flame_experiment/global/myPlayer_state.dart';
+import 'package:flutter_flame_experiment/global/my_player_state.dart';
 
 import '../utils.dart';
 import 'object_meta.dart';
@@ -33,10 +33,8 @@ class SelectedObject extends SpriteComponent with Hitbox, Collidable {
     super.update(dt);
     size = Vector2(meta.width, meta.height);
     sprite = Sprite(Flame.images.fromCache(meta.image));
-    position = positionRef + getDirectionVector(angle, 25);
-    if (meta.name == 'katana') {
-      position =
-          positionRef + getDirectionVector(angle, 25 + katanaMeta.width / 2);
+    position = positionRef + getDirectionVector(angle, 25 + meta.width / 2);
+    if (meta.type == 'tool') {
       position += getDirectionVector(angle + 90, 40);
     }
   }
@@ -44,13 +42,15 @@ class SelectedObject extends SpriteComponent with Hitbox, Collidable {
   @override
   void onCollision(Set<Vector2> intersectionPoints, Collidable other) {
     if (myPlayerParent) {
-      switch (other.runtimeType) {
-        case (SelectedObject):
-        case (MyPlayer):
-          break;
-        default:
-          canPlace = false;
-        //print(other.runtimeType);
+      if (meta.type == 'placeable') {
+        switch (other.runtimeType) {
+          case (SelectedObject):
+          case (MyPlayer):
+            break;
+          default:
+            canPlace = false;
+          //print(other.runtimeType);
+        }
       }
     }
   }

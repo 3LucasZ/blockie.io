@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_flame_experiment/global/late.dart';
-import 'package:flutter_flame_experiment/global/myPlayer_state.dart';
+import 'package:flutter_flame_experiment/global/my_player_state.dart';
 import 'package:flutter_flame_experiment/game/object_meta.dart';
 
 class InventoryBar extends StatelessWidget {
@@ -47,7 +47,7 @@ class InventorySquare extends StatelessWidget {
     double tileSize = screenSize.width / 16;
     return GestureDetector(
       onTap: () {
-        holdingObject = object;
+        mySelectedMeta = object;
       },
       child: Container(
         width: tileSize,

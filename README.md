@@ -1,3 +1,4 @@
-# flutter_flame_experiment
+# Blockie.io
 
-Creating a simple game with flutter and flame engine
+Very simple multiplayer game where you fight others just for fun. 
+Inspired by moomoo.io

@@ -1,4 +1,5 @@
 # Blockie.io
 
-Very simple multiplayer game where you fight others just for fun. 
-Inspired by moomoo.io
+Fun multiplayer fighting game. Inspired by moomoo.io game.
+
+Keep on the lookout for version 2, coming out soon!! 
